@@ -6,6 +6,7 @@ import sys.io.File;
 class App {
     public static var names:Array<Dynamic> = new Array<Dynamic>();
     public static var defaultMinawans:Dynamic = 0;
+	public static var thisVer = "0.0.1";
 
     public static function initCore() {
         getAllNames();

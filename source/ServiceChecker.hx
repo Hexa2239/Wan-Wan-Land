@@ -11,6 +11,6 @@ class ServiceChecker extends FlxState {
 
         App.initCore(); // Gets all data required for the app to run!
 
-        var request = new Http("");   
+		var request = new Http(App.thisVer);   
     }
 }
