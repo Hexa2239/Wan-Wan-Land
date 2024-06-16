@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.group.FlxSpriteGroup;
+import flixel.util.FlxColor;
 
 class PlayState extends FlxState
 {
@@ -21,15 +22,26 @@ class PlayState extends FlxState
 	override public function create()
 	{
 		var background = new FlxSprite();
-		background.loadGraphic("assets/images/cerberMenu.png");
+		if (FlxG.save.data.greenScreen == false)
+		{
+			background.loadGraphic("assets/images/cerberMenu.png");
+		}
+		else
+		{
+			background.alpha = 1;
+			background.makeGraphic(FlxG.width, FlxG.height, FlxColor.GREEN);
+		}
 		add(background);
 
-		var cerber = new FlxSprite();
-		cerber.y = 400;
-		cerber.alpha = 0.6;
-		cerber.screenCenter(X);
-		cerber.loadGraphic("assets/images/cerberSprite.png");
-		add(cerber);
+		if (FlxG.save.data.greenScreen == false)
+		{
+			var cerber = new FlxSprite();
+			cerber.y = 400;
+			cerber.alpha = 0.6;
+			cerber.screenCenter(X);
+			cerber.loadGraphic("assets/images/cerberSprite.png");
+			add(cerber);
+		}
 
 		super.create();
 	}
@@ -79,6 +91,12 @@ class PlayState extends FlxState
 
 		if (FlxG.keys.justPressed.R)
 		{
+			FlxG.resetState();
+		}
+
+		if (FlxG.keys.justPressed.NINE)
+		{
+			FlxG.save.data.greenScreen = !FlxG.save.data.greenScreen;
 			FlxG.resetState();
 		}
 
