@@ -13,6 +13,8 @@ class PlayState extends FlxState
 	var amountOfCharacters = 0;
 	private var direction:Int = 1;
 
+	public static var hasSeenLagWarning = false;
+
 	var offset = 20;
 
 	var grabbing = false;
@@ -21,6 +23,14 @@ class PlayState extends FlxState
 
 	override public function create()
 	{
+		if (hasSeenLagWarning == false)
+		{
+			hasSeenLagWarning = true;
+			FlxG.switchState(new MessagePrompt("This may lag your PC. Make sure your PC is properly equipped to handle the massive amounts of these objects.\nCurrent Amount of Minawan to spawn: "
+				+ App.defaultMinawans,
+				new PlayState()));
+		}
+
 		var background = new FlxSprite();
 		if (FlxG.save.data.greenScreen == false)
 		{
@@ -48,27 +58,37 @@ class PlayState extends FlxState
 
 	public function createMinawan()
 	{
-		var character = new Minawan();
-
-		var possible = FlxG.random.int(0, 1);
-		if (possible == 1)
+		if (hasSeenLagWarning)
 		{
-			character.direction = -1;
-		}
-		else
-		{
-			character.direction = 1;
-		}
+			var character = new Minawan();
 
-		var silly = FlxG.random.float(1, 3);
+			var possible = FlxG.random.int(0, 1);
+			if (possible == 1)
+			{
+				character.direction = -1;
+			}
+			else
+			{
+				character.direction = 1;
+			}
 
-		character.x = FlxG.random.int(30, FlxG.width - 50);
-		character.y = FlxG.height - 30 - silly * 10 + offset;
-		character.loadGraphic("assets/images/minawan.png");
-		character.color = FlxColor.fromRGB(FlxG.random.int(100, 255), FlxG.random.int(100, 255), FlxG.random.int(100, 255));
-		character.scale.set(silly, silly); // Not animated :( Haxeflixel doesn't support it naturally.
-		add(character);
-		minawanSprites.push(character);
+			var silly = FlxG.random.float(1, 3);
+
+			character.x = FlxG.random.int(30, FlxG.width - 50);
+			character.y = FlxG.height - 30 - silly * 10 + offset;
+			character.loadGraphic("assets/images/minawan.png");
+			if (FlxG.save.data.greenScreen)
+			{
+				character.color = FlxColor.fromRGB(FlxG.random.int(10, 100), FlxG.random.int(10, 60), FlxG.random.int(100, 120));
+			}
+			else
+			{
+				character.color = FlxColor.fromRGB(FlxG.random.int(100, 255), FlxG.random.int(100, 255), FlxG.random.int(100, 255));
+			}
+			character.scale.set(silly, silly); // Not animated :( Haxeflixel doesn't support it naturally.
+			add(character);
+			minawanSprites.push(character);
+		}
 	}
 
 	override public function update(elapsed:Float)
