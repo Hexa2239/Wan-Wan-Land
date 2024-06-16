@@ -36,7 +36,8 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float)
 	{
-		while (amountOfCharacters < 100) {
+		while (amountOfCharacters < App.defaultMinawans)
+		{
 			
 			var character = new Minawan();
 
@@ -76,6 +77,36 @@ class PlayState extends FlxState
 			}
 		}
 
+		if (FlxG.keys.justPressed.R)
+		{
+			FlxG.resetState();
+		}
+
+		if (FlxG.keys.justPressed.SPACE)
+		{
+			var character = new Minawan();
+
+			var possible = FlxG.random.int(0, 1);
+			if (possible == 1)
+			{
+				character.direction = -1;
+			}
+			else
+			{
+				character.direction = 1;
+			}
+
+			var silly = FlxG.random.float(1, 3);
+
+			character.x = FlxG.random.int(30, FlxG.width - 50);
+			character.y = FlxG.height - 30 - silly * 10 + offset;
+			character.loadGraphic("assets/images/minawan.png");
+			character.scale.set(silly, silly); // Not animated :( Haxeflixel doesn't support it naturally.
+			add(character);
+			minawanSprites.push(character);
+			amountOfCharacters += 1;
+		}
+
 		minawanGrabbing();
 
 		super.update(elapsed);
@@ -86,7 +117,8 @@ class PlayState extends FlxState
 	public function minawanGrabbing() {
 		
 		for (minawan in minawanSprites) {
-			if (FlxG.mouse.overlaps(minawan) && FlxG.mouse.pressed) {
+			if (FlxG.mouse.overlaps(minawan) && FlxG.mouse.pressed && grabbing == false)
+			{
 				grabbing = true;
 				minawanGrabbed = minawan;
 			}
