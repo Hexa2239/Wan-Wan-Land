@@ -46,28 +46,36 @@ class PlayState extends FlxState
 		super.create();
 	}
 
+	public function createMinawan()
+	{
+		var character = new Minawan();
+
+		var possible = FlxG.random.int(0, 1);
+		if (possible == 1)
+		{
+			character.direction = -1;
+		}
+		else
+		{
+			character.direction = 1;
+		}
+
+		var silly = FlxG.random.float(1, 3);
+
+		character.x = FlxG.random.int(30, FlxG.width - 50);
+		character.y = FlxG.height - 30 - silly * 10 + offset;
+		character.loadGraphic("assets/images/minawan.png");
+		character.color = FlxColor.fromRGB(FlxG.random.int(100, 255), FlxG.random.int(100, 255), FlxG.random.int(100, 255));
+		character.scale.set(silly, silly); // Not animated :( Haxeflixel doesn't support it naturally.
+		add(character);
+		minawanSprites.push(character);
+	}
+
 	override public function update(elapsed:Float)
 	{
 		while (amountOfCharacters < App.defaultMinawans)
 		{
-			
-			var character = new Minawan();
-
-			var possible = FlxG.random.int(0, 1);
-			if (possible == 1) {
-				character.direction = -1;
-			} else {
-				character.direction = 1;
-			}
-
-			var silly = FlxG.random.float(1, 3);
-			
-			character.x = FlxG.random.int(30, FlxG.width - 50);
-			character.y = FlxG.height - 30 - silly * 10 + offset;
-			character.loadGraphic("assets/images/minawan.png");
-			character.scale.set(silly, silly); // Not animated :( Haxeflixel doesn't support it naturally.
-			add(character);
-			minawanSprites.push(character);
+			createMinawan();
 			amountOfCharacters += 1;
 		}
 
@@ -102,27 +110,7 @@ class PlayState extends FlxState
 
 		if (FlxG.keys.justPressed.SPACE)
 		{
-			var character = new Minawan();
-
-			var possible = FlxG.random.int(0, 1);
-			if (possible == 1)
-			{
-				character.direction = -1;
-			}
-			else
-			{
-				character.direction = 1;
-			}
-
-			var silly = FlxG.random.float(1, 3);
-
-			character.x = FlxG.random.int(30, FlxG.width - 50);
-			character.y = FlxG.height - 30 - silly * 10 + offset;
-			character.loadGraphic("assets/images/minawan.png");
-			character.scale.set(silly, silly); // Not animated :( Haxeflixel doesn't support it naturally.
-			add(character);
-			minawanSprites.push(character);
-			amountOfCharacters += 1;
+			createMinawan();
 		}
 
 		minawanGrabbing();
