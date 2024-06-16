@@ -8,6 +8,8 @@ class App {
     public static var defaultMinawans:Dynamic = 0;
 	public static var thisVer = "0.0.1";
 
+	public static var coreLoaded = false;
+
     public static function initCore() {
         getAllNames();
     }
@@ -20,5 +22,6 @@ class App {
         names = json.names;
         defaultMinawans = json.maxLimit;
         trace("Names Loaded!");
+		coreLoaded = true;
     }
 }
