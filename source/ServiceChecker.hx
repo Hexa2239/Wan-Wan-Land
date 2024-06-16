@@ -12,7 +12,15 @@ class ServiceChecker extends FlxState {
 
         // Check Github if this version is latest version.
 
+
         App.initCore(); // Gets all data required for the app to run!
+
+		FlxG.autoPause = false;
+
+		if (FlxG.save.data.greenScreen == null)
+		{
+			FlxG.save.data.greenScreen = false;
+		}
 
 		while (App.coreLoaded && preloading == false)
 		{
