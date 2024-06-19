@@ -1,4 +1,4 @@
-package;
+package appmodes;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -6,10 +6,10 @@ import flixel.FlxState;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxColor;
 
-class PlayState extends FlxState
+class MinawanWalk extends FlxState
 {
-
 	public var minawanSprites:Array<Minawan> = new Array<Minawan>(); // I was going to add names but I changed my mind and its a bit complicated
+
 	var amountOfCharacters = 0;
 	private var direction:Int = 1;
 
@@ -19,7 +19,6 @@ class PlayState extends FlxState
 
 	var grabbing = false;
 	var minawanGrabbed:Minawan;
-	
 
 	override public function create()
 	{
@@ -28,7 +27,7 @@ class PlayState extends FlxState
 			hasSeenLagWarning = true;
 			FlxG.switchState(new MessagePrompt("This may lag your PC. Make sure your PC is properly equipped to handle the massive amounts of these objects.\nCurrent Amount of Minawan to spawn: "
 				+ App.defaultMinawans,
-				new PlayState()));
+				new MinawanWalk()));
 		}
 
 		var background = new FlxSprite();
@@ -93,18 +92,28 @@ class PlayState extends FlxState
 
 	override public function update(elapsed:Float)
 	{
+		if (FlxG.keys.justPressed.LBRACKET)
+		{
+			App.changeSelection(-1);
+			FlxG.switchState(new appmodes.MinawanFall());
+		}
+
 		while (amountOfCharacters < App.defaultMinawans)
 		{
 			createMinawan();
 			amountOfCharacters += 1;
 		}
 
-		for (character in minawanSprites) {
+		for (character in minawanSprites)
+		{
 			character.x += character.direction * 100 * elapsed / 2;
 
-			if (character.direction == -1) {
-				character.flipX = false;		
-			} else {
+			if (character.direction == -1)
+			{
+				character.flipX = false;
+			}
+			else
+			{
 				character.flipX = true;
 			}
 
@@ -112,8 +121,6 @@ class PlayState extends FlxState
 			if (character.x <= 0 || character.x + character.width >= FlxG.width)
 			{
 				character.direction *= -1;
-				
-				
 			}
 		}
 
@@ -140,39 +147,43 @@ class PlayState extends FlxState
 
 	var droppingMinawan:Bool = false;
 
-	public function minawanGrabbing() {
-		
-		for (minawan in minawanSprites) {
+	public function minawanGrabbing()
+	{
+		for (minawan in minawanSprites)
+		{
 			if (FlxG.mouse.overlaps(minawan) && FlxG.mouse.pressed && grabbing == false)
 			{
 				grabbing = true;
 				minawanGrabbed = minawan;
 			}
 		}
-		
-		if (FlxG.mouse.justPressed && grabbing == true) {
+
+		if (FlxG.mouse.justPressed && grabbing == true)
+		{
 			droppingMinawan = true;
 			grabbing = false;
 		}
-		
-		if (droppingMinawan) {
+
+		if (droppingMinawan)
+		{
 			var hasCollided = true;
 
-			while(minawanGrabbed.y < FlxG.height - 30 - minawanGrabbed.scale.x * 10 + offset) {
+			while (minawanGrabbed.y < FlxG.height - 30 - minawanGrabbed.scale.x * 10 + offset)
+			{
 				minawanGrabbed.y += 0.5;
 				hasCollided = false;
 			}
 
-			if (hasCollided) {
+			if (hasCollided)
+			{
 				grabbing = false;
 				minawanGrabbed = null;
 				droppingMinawan = false;
 			}
-
-			
 		}
 
-		if (grabbing) {
+		if (grabbing)
+		{
 			minawanGrabbed.x = FlxG.mouse.x;
 			minawanGrabbed.y = FlxG.mouse.y;
 		}

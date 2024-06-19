@@ -1,5 +1,6 @@
 package;
 
+import appmodes.MinawanWalk;
 import flixel.FlxG;
 import flixel.FlxState;
 import sys.Http;
@@ -32,14 +33,14 @@ class ServiceChecker extends FlxState {
 			{
 				trace("ERROR: App is outdated so download required.");
 				FlxG.switchState(new MessagePrompt("Your version of Wan Wan Land is outdated!\nIt is recommended to update due to the possible amount of lag this app may have. \nYou don't have to though.",
-					new PlayState()));
+					new MinawanWalk()));
 			}
 			else
 			{
 				while (App.coreLoaded && preloading == false)
 				{
 					preloading = true;
-					FlxG.switchState(new PlayState());
+					FlxG.switchState(new MinawanWalk());
 				}
 			}
 		}
