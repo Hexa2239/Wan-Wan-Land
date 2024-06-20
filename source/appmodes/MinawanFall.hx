@@ -5,7 +5,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 
-class MinawanFall extends FlxState
+class MinawanFall extends MinawanState
 {
 	public var minawanSprite:Array<Minawan> = new Array<Minawan>();
 	public var amountOfCharacters = 0;
@@ -57,7 +57,7 @@ class MinawanFall extends FlxState
 
 		if (FlxG.keys.justPressed.LBRACKET)
 		{
-			FlxG.switchState(new appmodes.MinawanWalk());
+			FlxG.switchState(new MinawanDVD());
 		}
 
 		while (amountOfCharacters < App.defaultMinawans)
@@ -86,7 +86,11 @@ class MinawanFall extends FlxState
 		character.y = FlxG.random.int(0, FlxG.height - 50);
 
 		character.loadGraphic("assets/images/minawan.png");
-		if (FlxG.save.data.greenScreen == false)
+		if (FlxG.save.data.greenScreen)
+		{
+			character.color = FlxColor.fromRGB(FlxG.random.int(10, 100), FlxG.random.int(10, 60), FlxG.random.int(100, 120));
+		}
+		else
 		{
 			character.color = FlxColor.fromRGB(FlxG.random.int(100, 255), FlxG.random.int(100, 255), FlxG.random.int(100, 255));
 		}

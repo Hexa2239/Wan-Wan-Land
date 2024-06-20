@@ -6,7 +6,7 @@ import flixel.FlxState;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxColor;
 
-class MinawanWalk extends FlxState
+class MinawanWalk extends MinawanState
 {
 	public var minawanSprites:Array<Minawan> = new Array<Minawan>(); // I was going to add names but I changed my mind and its a bit complicated
 
@@ -14,6 +14,8 @@ class MinawanWalk extends FlxState
 	private var direction:Int = 1;
 
 	public static var hasSeenLagWarning = false;
+	public static var hasStateChangeCalled = false;
+
 
 	var offset = 20;
 
@@ -22,12 +24,18 @@ class MinawanWalk extends FlxState
 
 	override public function create()
 	{
-		if (hasSeenLagWarning == false)
+		if (hasStateChangeCalled)
 		{
 			hasSeenLagWarning = true;
+		}
+
+		if (hasSeenLagWarning == false)
+		{
+			hasStateChangeCalled = true;
 			FlxG.switchState(new MessagePrompt("This may lag your PC. Make sure your PC is properly equipped to handle the massive amounts of these objects.\nCurrent Amount of Minawan to spawn: "
 				+ App.defaultMinawans,
 				new MinawanWalk()));
+
 		}
 
 		var background = new FlxSprite();
@@ -71,11 +79,13 @@ class MinawanWalk extends FlxState
 				character.direction = 1;
 			}
 
-			var silly = FlxG.random.float(1, 3);
+			var silly = FlxG.random.float(1.2, 3);
 
 			character.x = FlxG.random.int(30, FlxG.width - 50);
 			character.y = FlxG.height - 30 - silly * 10 + offset;
-			character.loadGraphic("assets/images/minawan.png");
+			// character.loadGraphic("assets/images/minawan.png");
+
+			character.loadGraphic("assets/images/minawan.png"); // Had to go back since the engine decided to place them below the surface :( I'll fix way later.
 			if (FlxG.save.data.greenScreen)
 			{
 				character.color = FlxColor.fromRGB(FlxG.random.int(10, 100), FlxG.random.int(10, 60), FlxG.random.int(100, 120));
@@ -94,7 +104,6 @@ class MinawanWalk extends FlxState
 	{
 		if (FlxG.keys.justPressed.LBRACKET)
 		{
-			App.changeSelection(-1);
 			FlxG.switchState(new appmodes.MinawanFall());
 		}
 

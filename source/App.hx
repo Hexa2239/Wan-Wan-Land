@@ -10,17 +10,19 @@ class App {
     public static var defaultMinawans:Dynamic = 0;
 	public static var thisVer = "0.0.1";
 
-	public static var curState = 0;
-	public static var maxState = 1;
+	public static var spriteNames:Array<Dynamic> = new Array<Dynamic>();
+
 
 
 	public static var coreLoaded = false;
 
     public static function initCore() {
-        getAllNames();
+		getMinaData();
+		// getSpriteData(); A feature that was  removed.
     }
 
-    public static function getAllNames() {
+	public static function getMinaData()
+	{
         var nameFile = File.getContent("assets/data/data.json");
         
         var json = Json.parse(nameFile);
@@ -29,20 +31,16 @@ class App {
         defaultMinawans = json.maxLimit;
         trace("Names Loaded!");
 		coreLoaded = true;
-    }
-	public static function changeSelection(huh)
-	{
-		curState += huh;
-
-		if (App.curState > maxState)
-		{
-			curState = 0;
-		}
-		else if (App.curState < 0)
-		{
-			curState = maxState;
-		}
-
-		trace("Ho ho ho! Merry changing state time\nNew State: " + App.curState);
 	}
+	public static function getSpriteData()
+	{
+		var spriteFile = File.getContent("assets/images/mina/data.json");
+
+		var jsonParsed = Json.parse(spriteFile);
+
+		
+		spriteNames = jsonParsed.spriteList;
+		trace("Sprites Files Loaded!");
+	}
+
 }
