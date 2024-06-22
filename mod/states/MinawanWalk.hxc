@@ -1,0 +1,73 @@
+var minawanSprites = new Array();
+var offset = 20;
+var curMinawan = 0;
+
+function onCreate() {
+    trace("Minawan Greenscreen mode!");
+    var bg = new FlxSprite();
+    bg.makeGraphic(FlxG.width, FlxG.height, FlxColor(0, 255, 0));
+    Me.addCustomSprite(bg);
+    trace("Greenscreen Mode support!");
+}
+
+function onUpdate(elapsed) {
+
+    while (curMinawan < Data.defaultMinawans) {
+        createMinawan();
+    }
+
+    for (character in minawanSprites)
+	{
+		character.x += character.direction * 100 * elapsed / 2;
+		if (character.direction == -1)
+		{
+			character.flipX = false;
+		}
+		else
+		{
+			character.flipX = true;
+		}
+
+		// Check for collisions with the screen edges
+		if (character.x <= 0 || character.x + character.width >= FlxG.width)
+		{
+			character.direction *= -1;
+		}
+	}
+}
+
+function onDestroy() {
+    trace("Bye Bye!!!");
+}
+
+
+// Minawan Creation
+function createMinawan() {
+    var minawan = new Minawan();
+    trace("Minawan Created!");
+
+    var possibleDir = FlxG.random.int(0, 1);
+    if (possibleDir == 1) {
+        minawan.direction = -1;
+    } else {
+        minawan.direction = 1;
+    }
+
+    trace("Possible Direction: " + possibleDir);  
+
+    var silly = FlxG.random.float(1.2, 3);
+
+    minawan.x = FlxG.random.int(30, FlxG.width - 50);
+    minawan.y = FlxG.height - 30 - silly * 10 + offset; // Holy shit
+    trace("Positions modified");
+
+    minawan.loadGraphic("assets/images/minawan.png");
+    trace("Graphic Loaded");
+
+    minawan.scale.set(silly, silly);
+    minawanSprites.push(minawan);
+    Me.addCustomSprite(minawan);
+
+    curMinawan += 1;
+    trace("Operation Complete!");
+}

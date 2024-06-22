@@ -1,0 +1,37 @@
+var minawanSprites = new Array();
+var curMinawan = 0;
+
+function onCreate() {
+    trace("Hi!");
+
+}
+
+function onUpdate(elapsed) {
+    while (curMinawan < Data.defaultMinawans) {
+        createMinawan();
+    }
+
+    for (character in minawanSprites) {
+        if (character.y > FlxG.height) {
+            character.y = -25;
+        }
+
+        character.velocity.set(0, 200);
+    }
+}
+
+function createMinawan() {
+    var minawan = new Minawan();
+
+    minawan.x = FlxG.random.int(0, FlxG.width - 50);
+    minawan.y = FlxG.random.int(0, FlxG.height - 25);
+
+    var silly = FlxG.random.float(1.5, 3);
+    minawan.scale.set(silly, silly);
+
+    minawan.loadGraphic("assets/images/minawan.png");
+
+    minawanSprites.push(minawan);
+    curMinawan += 1;
+    Me.addCustomSprite(minawan);
+}

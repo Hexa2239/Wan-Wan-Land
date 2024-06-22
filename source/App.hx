@@ -6,11 +6,14 @@ import haxe.Json;
 import sys.io.File;
 
 class App {
-    public static var names:Array<Dynamic> = new Array<Dynamic>();
+
     public static var defaultMinawans:Dynamic = 0;
 	public static var thisVer = "0.0.1";
 
-	public static var spriteNames:Array<Dynamic> = new Array<Dynamic>();
+	// States System
+	public static var sillyStates = new Array<Dynamic>();
+	public static var curState = 0;
+
 
 
 
@@ -18,29 +21,52 @@ class App {
 
     public static function initCore() {
 		getMinaData();
-		// getSpriteData(); A feature that was  removed.
+		getStates();
     }
 
 	public static function getMinaData()
 	{
-        var nameFile = File.getContent("assets/data/data.json");
-        
-        var json = Json.parse(nameFile);
+		var dataFile = File.getContent("assets/data/data.json");
 
-        names = json.names;
+		var json = Json.parse(dataFile);
+
+
         defaultMinawans = json.maxLimit;
-        trace("Names Loaded!");
+		trace("Data Loaded!");
 		coreLoaded = true;
 	}
-	public static function getSpriteData()
+	public static function getStates()
 	{
-		var spriteFile = File.getContent("assets/images/mina/data.json");
+		var statesData = File.getContent("mod/states/states.json");
 
-		var jsonParsed = Json.parse(spriteFile);
+		var json = Json.parse(statesData);
 
-		
-		spriteNames = jsonParsed.spriteList;
-		trace("Sprites Files Loaded!");
+		var states:Array<Dynamic> = json.states;
+		for (state in states)
+		{
+			trace("Pushing state: " + state);
+			sillyStates.push(state + ".hxc");
+			trace("Successfully pushed" + state);
+		}
+
+		trace("All states loaded!");
+	}
+
+	public static function updateStateSelection(huh)
+	{
+
+		curState += huh;
+
+		if (curState > sillyStates.length - 1)
+		{
+			curState = 0;
+		}
+		else if (curState < 0)
+		{
+			curState = sillyStates.length - 1;
+		}
+
+		trace("State selection updated! WAN WAN");
 	}
 
 }

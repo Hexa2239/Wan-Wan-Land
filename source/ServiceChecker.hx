@@ -1,6 +1,5 @@
 package;
 
-import appmodes.MinawanWalk;
 import flixel.FlxG;
 import flixel.FlxState;
 import sys.Http;
@@ -23,36 +22,11 @@ class ServiceChecker extends FlxState {
 			FlxG.save.data.greenScreen = false;
 		}
 
-		var httpRequest = new haxe.Http("https://raw.githubusercontent.com/Hexa2239/Hexa2239/main/data/minaland.ver");
-
-		httpRequest.onData = function(response:String)
+		while (App.coreLoaded && preloading == false)
 		{
-			trace(response);
-
-			if (response != App.thisVer)
-			{
-				trace("ERROR: App is outdated so download required.");
-				FlxG.switchState(new MessagePrompt("Your version of Wan Wan Land is outdated!\nIt is recommended to update due to the possible amount of lag this app may have. \nYou don't have to though.",
-					new MinawanWalk()));
-			}
-			else
-			{
-				while (App.coreLoaded && preloading == false)
-				{
-					preloading = true;
-					FlxG.switchState(new MinawanWalk());
-				}
-			}
+			preloading = true;
+			FlxG.switchState(new AppState());
 		}
-
-		httpRequest.onError = function(error:String)
-		{
-			trace("I was unable to reach the Hexa Network\nError: " + error);
-			Sys.exit(0);
-			return;
-		}
-
-		httpRequest.request();
 
 
 
