@@ -1,15 +1,11 @@
-# Wan Wan Land
+# Minawan Land!
 
-An app made for Cerber's community and silly! Basically it has MinaWan running around and you can pick them up and watch them. 
+Minawan Land, the app dedicated entirely to Cerber. 
 
-[CerberVT's Twitch Page](https://twitch.tv/cerbervt)
+## Changelog 0.0.4 -> 0.0.4.1
 
-# Plans
-
-~~I plan on adding a green screen mode so if a streamer wanted to import their own sprites they could have a greenscreen to have it as a background in their streams.~~
-Greenscreen Mode finished,
-
-- I want to add the ability to disable random colours,
-- The ability to force a certain color on the Minawan
+- Added easier modding system to make custom states and features for the app! - 0.0.4
+- Removed states.json file and replaced it with automatic gatherer - 0.0.4.1,
+- Added Debug Info if you press 9 on your keyboard. - 0.0.4.1
 
 
