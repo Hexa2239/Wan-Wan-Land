@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxState;
 import haxe.Json;
+import sys.FileSystem;
 import sys.io.File;
 
 class App {
@@ -33,10 +34,11 @@ class App {
 
         defaultMinawans = json.maxLimit;
 		trace("Data Loaded!");
-		coreLoaded = true;
+
 	}
 	public static function getStates()
 	{
+		/*
 		var statesData = File.getContent("mod/states/states.json");
 
 		var json = Json.parse(statesData);
@@ -50,6 +52,24 @@ class App {
 		}
 
 		trace("All states loaded!");
+																								coreLoaded = true;
+		 */
+
+		var statesPath = "mod/states/";
+		if (FileSystem.exists(statesPath) && FileSystem.isDirectory(statesPath))
+		{
+			var files = FileSystem.readDirectory(statesPath);
+
+			var fileList = [];
+			for (file in files)
+			{
+				trace("Pushing " + file + " to stack");
+				sillyStates.push(file);
+				trace("Successfully pushed " + file + " to state stack");
+			}
+		}
+
+		coreLoaded = true;
 	}
 
 	public static function updateStateSelection(huh)
